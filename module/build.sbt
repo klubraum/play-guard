@@ -6,16 +6,13 @@ version := "2.6.0"
 
 scalaVersion := "3.3.0"
 
-resolvers ++= Seq(
-  "Playframework".at("https://maven.pkg.github.com/klubraum/playframework"),
-)
+credentials += Credentials("GitHub Package Registry", "maven.pkg.github.com", "klubraum", System.getenv("GITHUB_TOKEN"))
+
+resolvers ++= Seq("Playframework".at("https://maven.pkg.github.com/klubraum/playframework"))
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalacOptions ++= Seq(
-  "-feature",
-  "-language:higherKinds"
-)
+scalacOptions ++= Seq("-feature", "-language:higherKinds")
 
 libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-M6" % "test",
@@ -23,8 +20,6 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest-mustmatchers" % "3.2.15" % "test",
   "org.scalatestplus" %% "scalacheck-1-17" % "3.2.15.0" % "test"
 )
-
-
 
 publishMavenStyle := true
 
