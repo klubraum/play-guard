@@ -2,8 +2,6 @@ name := """play-guard"""
 
 organization := """com.digitaltangible"""
 
-version := "2.6.0"
-
 scalaVersion := "3.3.0"
 
 credentials += Credentials("GitHub Package Registry", "maven.pkg.github.com", "klubraum", System.getenv("GITHUB_TOKEN"))
