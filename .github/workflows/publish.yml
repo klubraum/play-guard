@@ -37,6 +37,6 @@ jobs:
 
       - name: Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_ACCESS_TOKEN }}
         run: sbt clean test publish
         working-directory: module
