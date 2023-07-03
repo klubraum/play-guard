@@ -1,7 +1,6 @@
 package com.digitaltangible.tokenbucket
 
-/**
-  * For mocking the current time.
+/** For mocking the current time.
   */
 trait Clock {
   def now: Long

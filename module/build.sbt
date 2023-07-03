@@ -2,12 +2,13 @@ name := """play-guard"""
 
 organization := """com.digitaltangible"""
 
-version := "2.6.0-SNAPSHOT"
+version := "2.6.0"
 
-scalaVersion := "2.12.11"
+scalaVersion := "3.3.0"
 
-crossScalaVersions := Seq("2.13.1", "2.12.11")
-
+resolvers ++= Seq(
+  "Playframework".at("https://maven.pkg.github.com/klubraum/playframework"),
+)
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -17,8 +18,10 @@ scalacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % "test",
-  "org.scalacheck" %% "scalacheck" % "1.14.3" % "test"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-M6" % "test",
+  "org.scalacheck" %% "scalacheck" % "1.17.0" % "test",
+  "org.scalatest" %% "scalatest-mustmatchers" % "3.2.15" % "test",
+  "org.scalatestplus" %% "scalacheck-1-17" % "3.2.15.0" % "test"
 )
 
 
@@ -27,13 +30,9 @@ publishMavenStyle := true
 
 publishArtifact in Test := false
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (version.value endsWith "SNAPSHOT")
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+githubOwner := "klubraum"
+
+githubRepository := "play-guard"
 
 pomExtra := <url>https://github.com/sief/play-guard</url>
   <licenses>

@@ -1,13 +1,15 @@
 package com.digitaltangible.tokenbucket
 
-/**
- * TokenBucketGroup which synchronizes the bucket token requests.
- * Token Bucket implementation as described here http://en.wikipedia.org/wiki/Token_bucket
- *
- * @param size  bucket size
- * @param rate  refill rate in tokens per second
- * @param clock for mocking the current time.
- */
+/** TokenBucketGroup which synchronizes the bucket token requests. Token Bucket implementation as described here
+  * http://en.wikipedia.org/wiki/Token_bucket
+  *
+  * @param size
+  *   bucket size
+  * @param rate
+  *   refill rate in tokens per second
+  * @param clock
+  *   for mocking the current time.
+  */
 class TokenBucketGroup(val size: Long, val rate: Double, clock: Clock = CurrentTimeClock) extends Serializable {
 
   private val NanosPerSecond = 1000000000
@@ -27,14 +29,14 @@ class TokenBucketGroup(val size: Long, val rate: Double, clock: Clock = CurrentT
 
   private[this] var buckets = Map.empty[Any, Long]
 
-  /**
-   * First refills all buckets at the given rate, then tries to consume the required amount.
-   * If no bucket exists for the given key, a new full one is created.
-   *
-   * @param key
-   * @param required number of tokens to consume
-   * @return
-   */
+  /** First refills all buckets at the given rate, then tries to consume the required amount. If no bucket exists for
+    * the given key, a new full one is created.
+    *
+    * @param key
+    * @param required
+    *   number of tokens to consume
+    * @return
+    */
   def consume(key: Any, required: Int): Long = Lock.synchronized {
     refillAll()
     val newLevel = buckets.getOrElse(key, size) - required
@@ -44,9 +46,8 @@ class TokenBucketGroup(val size: Long, val rate: Double, clock: Clock = CurrentT
     newLevel
   }
 
-  /**
-   * Refills all buckets at the given rate. Full buckets are removed.
-   */
+  /** Refills all buckets at the given rate. Full buckets are removed.
+    */
   private[this] def refillAll(): Unit = {
     val now: Long = clock.now
     val diff: Long = now - lastRefill

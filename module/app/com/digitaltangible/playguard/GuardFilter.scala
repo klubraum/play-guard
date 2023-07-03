@@ -1,12 +1,12 @@
 package com.digitaltangible.playguard
 
-import javax.inject.{Inject, Named, Singleton}
-
 import com.digitaltangible.tokenbucket.TokenBucketGroup
-import play.api.libs.streams.Accumulator._
-import play.api.mvc.Results._
-import play.api.mvc._
-import play.api.{Configuration, Logger}
+import play.api.libs.streams.Accumulator.*
+import play.api.mvc.*
+import play.api.mvc.Results.*
+import play.api.{ Configuration, Logger }
+
+import javax.inject.{ Inject, Named, Singleton }
 
 trait IpChecker {
   def isWhitelisted(ip: String): Boolean
@@ -15,7 +15,7 @@ trait IpChecker {
 }
 
 @Singleton
-class DefaultIpChecker @Inject()(conf: Configuration) extends IpChecker {
+class DefaultIpChecker @Inject() (conf: Configuration) extends IpChecker {
 
   private lazy val IpWhitelist =
     conf.get[Option[Seq[String]]]("playguard.filter.ip.whitelist").map(_.toSet).getOrElse(Set.empty)
@@ -29,44 +29,42 @@ class DefaultIpChecker @Inject()(conf: Configuration) extends IpChecker {
 }
 
 trait TokenBucketGroupProvider {
-  val tokenBucketSize: Int
-  val tokenBucketRate: Int
-  val tokenBucketGroup: TokenBucketGroup
+  lazy val tokenBucketSize: Int
+  lazy val tokenBucketRate: Int
+  lazy val tokenBucketGroup: TokenBucketGroup
 }
 
 trait DefaultTokenBucketGroupProvider extends TokenBucketGroupProvider {
   protected val conf: Configuration
-  lazy val tokenBucketGroup = new TokenBucketGroup(tokenBucketSize, tokenBucketRate)
+  override lazy val tokenBucketGroup = new TokenBucketGroup(tokenBucketSize, tokenBucketRate)
 }
 
 @Singleton
-class DefaultIpTokenBucketGroupProvider @Inject()(val conf: Configuration) extends DefaultTokenBucketGroupProvider {
-  lazy val tokenBucketSize: Int = conf.get[Int]("playguard.filter.ip.bucket.size")
-  lazy val tokenBucketRate: Int = conf.get[Int]("playguard.filter.ip.bucket.rate")
+class DefaultIpTokenBucketGroupProvider @Inject() (val conf: Configuration) extends DefaultTokenBucketGroupProvider {
+  override lazy val tokenBucketSize: Int = conf.get[Int]("playguard.filter.ip.bucket.size")
+  override lazy val tokenBucketRate: Int = conf.get[Int]("playguard.filter.ip.bucket.rate")
 }
 
 @Singleton
-class DefaultGlobalTokenBucketGroupProvider @Inject()(val conf: Configuration) extends DefaultTokenBucketGroupProvider {
-  lazy val tokenBucketSize: Int = conf.get[Int]("playguard.filter.global.bucket.size")
-  lazy val tokenBucketRate: Int = conf.get[Int]("playguard.filter.global.bucket.rate")
+class DefaultGlobalTokenBucketGroupProvider @Inject() (val conf: Configuration)
+    extends DefaultTokenBucketGroupProvider {
+  override lazy val tokenBucketSize: Int = conf.get[Int]("playguard.filter.global.bucket.size")
+  override lazy val tokenBucketRate: Int = conf.get[Int]("playguard.filter.global.bucket.rate")
 }
 
-/**
- * Filter for rate limiting and IP whitelisting/blacklisting
- *
- * Rejects request based on the following rules:
- *
- * 1. if IP is in whitelist => let pass
- * 2. else if IP is in blacklist => reject with ‘403 FORBIDDEN’
- * 3. else if IP rate limit exceeded => reject with ‘429 TOO_MANY_REQUEST’
- * 4. else if global rate limit exceeded => reject with ‘429 TOO_MANY_REQUEST’
- *
- */
+/** Filter for rate limiting and IP whitelisting/blacklisting
+  *
+  * Rejects request based on the following rules:
+  *
+  *   1. if IP is in whitelist => let pass 2. else if IP is in blacklist => reject with ‘403 FORBIDDEN’ 3. else if IP
+  *      rate limit exceeded => reject with ‘429 TOO_MANY_REQUEST’ 4. else if global rate limit exceeded => reject with
+  *      ‘429 TOO_MANY_REQUEST’
+  */
 @Singleton
-class GuardFilter @Inject()(
-  @Named("ip") ipTokenBucketGroupProvider: TokenBucketGroupProvider,
-  @Named("global") globalTokenBucketGroupProvider: TokenBucketGroupProvider,
-  ipListChecker: IpChecker
+class GuardFilter @Inject() (
+    @Named("ip") ipTokenBucketGroupProvider: TokenBucketGroupProvider,
+    @Named("global") globalTokenBucketGroupProvider: TokenBucketGroupProvider,
+    ipListChecker: IpChecker
 )(implicit conf: Configuration)
     extends EssentialFilter {
 

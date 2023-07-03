@@ -3,7 +3,7 @@ package com.digitaltangible.playguard
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.digitaltangible.FakeClock
-import com.digitaltangible.tokenbucket.{Clock, CurrentTimeClock, TokenBucketGroup}
+import com.digitaltangible.tokenbucket.{ Clock, CurrentTimeClock, TokenBucketGroup }
 import com.typesafe.config.ConfigFactory
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -11,7 +11,7 @@ import play.api._
 import play.api.mvc.Results._
 import play.api.mvc._
 import play.api.test.Helpers._
-import play.api.test.{FakeHeaders, FakeRequest}
+import play.api.test.{ FakeHeaders, FakeRequest }
 
 import scala.concurrent.ExecutionContext
 

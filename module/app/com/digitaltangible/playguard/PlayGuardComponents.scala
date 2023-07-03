@@ -1,7 +1,7 @@
 package com.digitaltangible.playguard
 
 import play.api.inject.Module
-import play.api.{Configuration, Environment}
+import play.api.{ Configuration, Environment }
 
 // for compile-time DI
 trait PlayGuardComponents {
@@ -17,9 +17,7 @@ trait PlayGuardComponents {
 
 // for runtime DI
 class PlayGuardIpCheckerModule extends Module {
-  def bindings(environment: Environment, configuration: Configuration) = Seq(
-    bind[IpChecker].to[DefaultIpChecker]
-  )
+  def bindings(environment: Environment, configuration: Configuration) = Seq(bind[IpChecker].to[DefaultIpChecker])
 }
 
 class PlayGuardTokenBucketGroupProviderModule extends Module {
