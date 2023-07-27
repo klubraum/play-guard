@@ -5,12 +5,12 @@ import java.net.InetAddress
 import javax.inject.Inject
 import play.api.http._
 import play.api.mvc.request.RemoteConnection
-import play.api.mvc.{EssentialFilter, Handler, Headers, RequestHeader}
+import play.api.mvc.{ EssentialFilter, Handler, Headers, RequestHeader }
 import play.api.routing.Router
 import play.core.DefaultWebCommands
 
 import java.net.InetAddress
-import javax.inject.{Inject, Provider}
+import javax.inject.{ Inject, Provider }
 import scala.util.Try
 
 /** Custom RequestHandler to replace the immediate connection with the last IP address in the X-Forwarded-For header, if

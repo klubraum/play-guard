@@ -2,7 +2,7 @@ package com.digitaltangible.playguard
 
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.play.PlaySpec
-import play.api.http.{DefaultHttpErrorHandler, HttpConfiguration}
+import play.api.http.{ DefaultHttpErrorHandler, HttpConfiguration }
 import play.api.mvc.Headers
 import play.api.mvc.request.RemoteConnection
 import play.api.routing.Router
