@@ -2,7 +2,7 @@ name := """play-guard"""
 
 organization := """com.digitaltangible"""
 
-scalaVersion := "3.3.0"
+scalaVersion := "3.3.1"
 
 credentials += Credentials("GitHub Package Registry", "maven.pkg.github.com", "klubraum", System.getenv("GITHUB_TOKEN"))
 
@@ -13,8 +13,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalacOptions ++= Seq("-feature", "-language:higherKinds")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-ws" % "2.9.0-M7-e7c16d23-SNAPSHOT" % "test",
-  ("org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-M6" % "test")
+  "com.typesafe.play" %% "play-ws" % "2.9.0" % "test",
+  ("org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-RC2" % "test")
     .excludeAll(ExclusionRule("com.typesafe.play")),
   "org.scalacheck" %% "scalacheck" % "1.17.0" % "test",
   "org.scalatest" %% "scalatest-mustmatchers" % "3.2.15" % "test",
